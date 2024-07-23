@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify, render_template, send_from_directory
+from flask import Flask, request, jsonify, render_template
 import pickle
 import numpy as np
 import json
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 # Print the current working directory for debugging
 print("Current Working Directory:", os.getcwd())
@@ -57,7 +57,7 @@ print("Salary Data Columns:", salary_data_columns)  # Debug: Print data columns
 
 @app.route('/')
 def home():
-    return send_from_directory(os.getcwd(),'index.html')
+    return render_template('index.html')
 
 @app.route('/predict_position', methods=['POST'])
 def predict_position():
