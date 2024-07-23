@@ -4,7 +4,7 @@ import numpy as np
 import json
 import os
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__)
 
 # Print the current working directory for debugging
 print("Current Working Directory:", os.getcwd())
