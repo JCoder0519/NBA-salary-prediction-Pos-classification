@@ -4,7 +4,6 @@ import numpy as np
 import json
 import os
 
-
 app = Flask(__name__)
 
 # Print the current working directory for debugging
@@ -40,7 +39,7 @@ with open(POSITION_SCALER_PATH, 'rb') as f:
 
 with open(POSITION_COLUMNS_PATH, 'r') as f:
     position_data_columns = json.load(f)['data_columns']
-    
+
 with open(POSITION_ENCODER_PATH, 'rb') as f:
     position_le = pickle.load(f)
 
@@ -58,7 +57,7 @@ print("Salary Data Columns:", salary_data_columns)  # Debug: Print data columns
 
 @app.route('/')
 def home():
-    return send_from_directory(os.getcwd(),'index.html')
+    return send_from_directory(os.getcwd(), 'index.html')
 
 @app.route('/predict_position', methods=['POST'])
 def predict_position():
@@ -69,7 +68,7 @@ def predict_position():
 
     for key in position_data_columns:
         input_data[position_data_columns.index(key)] = float(data.get(key, 0))
-    
+
     print("Feature array before scaling (position):", input_data)  # Debug: Log the feature array before scaling
 
     # Scale the input features using the fitted scaler
@@ -89,7 +88,7 @@ def predict_salary():
 
     position = data['position']
     print("Position:", position)  # Debug: Print position
-    
+
     Yrs = float(data['Yrs'])
     Age = float(data['Age'])
     GP = float(data['GP'])
@@ -103,7 +102,7 @@ def predict_salary():
     PTS = float(data['PTS'])
     Efficiency = float(data['Efficiency'])
     PIE_scaled = float(data['PIE_scaled'])
-    
+
     # Position one-hot encoding
     C = int(position == 'C')
     PF = int(position == 'PF')
@@ -112,7 +111,7 @@ def predict_salary():
     SG = int(position == 'SG')
 
     x = np.zeros(len(salary_data_columns))
-    
+
     x[0] = Yrs
     x[1] = Age
     x[2] = GP
@@ -145,4 +144,5 @@ def predict_salary():
     return jsonify({'salary': prediction})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
