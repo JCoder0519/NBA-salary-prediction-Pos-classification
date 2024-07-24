@@ -3,6 +3,8 @@ import pickle
 import numpy as np
 import json
 import os
+from urllib.parse import quote_plus as url_quote
+from werkzeug.urls import url_quote
 
 app = Flask(__name__)
 
